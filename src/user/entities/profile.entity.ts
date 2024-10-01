@@ -1,7 +1,7 @@
 import {
   Entity,
   Column,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
   CreateDateColumn,
@@ -12,13 +12,13 @@ import { User } from './user.entity';
 
 @Entity()
 export class Profile {
-  @PrimaryColumn({ generated: 'uuid' })
-  profile_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: number;
 
   @Column({ nullable: true })
   dob: Date;
 
-  @Column({ type: 'longtext', nullable: true })
+  @Column({ type: 'text', nullable: true })
   bio: string;
 
   @Column({ nullable: true })
@@ -38,7 +38,7 @@ export class Profile {
 
   /* previous relationship if any */
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, (user) => user.profile)
   @JoinColumn()
   user: User;
 }

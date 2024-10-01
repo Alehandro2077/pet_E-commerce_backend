@@ -1,16 +1,20 @@
 import {
   Entity,
   Column,
-  PrimaryColumn,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Profile } from './profile.entity';
+import { Order } from 'src/order/entities/order.entity';
 
 @Entity()
 export class User {
-  @PrimaryColumn({ generated: 'uuid' }) // generated specifies if this column will use auto increment (sequence, generated identity, rowid).
-  user_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: number;
 
   @Column()
   name: string;
@@ -34,5 +38,9 @@ export class User {
   @DeleteDateColumn({ nullable: true })
   deleted_on: Date;
 
-  /* previous relationship if any */
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }
